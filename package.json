@@ -1,0 +1,28 @@
+{
+  "name": "foundry",
+  "version": "0.0.1",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build:core": "yarn workspace @foundry/core build",
+    "dev:core": "yarn workspace @foundry/core dev",
+    "build:web": "yarn workspace @foundry/web build",
+    "dev:web": "yarn workspace @foundry/web dev",
+    "build:all": "yarn workspaces run build",
+    "test": "yarn workspaces run test",
+    "lint": "yarn workspaces run lint",
+    "format:fix": "yarn workspaces run format:fix"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.15",
+    "tailwindcss": "^3.4.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "yarn": ">=1.22.0"
+  },
+  "packageManager": "yarn@1.22.22"
+}
