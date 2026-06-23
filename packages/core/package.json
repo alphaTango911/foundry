@@ -5,13 +5,21 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": {
-      "import": "./dist/index.js",
-      "require": "./dist/index.cjs",
-      "types": "./dist/index.d.ts"
-    },
-    "./css": "./dist/tokens.css"
+  ".": {
+    "import": "./dist/index.js",
+    "types": "./dist/index.d.ts"
   },
+  "./css": "./dist/tokens.css",
+  "./themes/light": {
+    "import": "./dist/themes/light.js",
+    "types": "./dist/themes/light.d.ts"
+  },
+  "./themes/dark": {
+    "import": "./dist/themes/dark.js",
+    "types": "./dist/themes/dark.d.ts"
+  }
+},
+
   "scripts": {
     "build": "tsc && node scripts/build.js",
     "dev": "tsc --watch",
@@ -22,9 +30,9 @@
     "format:fix": "prettier --write src"
   },
   "devDependencies": {
-    "eslint": "^9.0.0",
-    "prettier": "^3.2.0",
     "typescript": "^5.4.0",
-    "vitest": "1.6.0"
+    "vitest": "^1.6.0",
+    "prettier": "^3.2.0",
+    "eslint": "^9.0.0"
   }
 }
