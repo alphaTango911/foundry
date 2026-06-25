@@ -96,6 +96,7 @@ export const useColorGeneratorStore = create<ColorGeneratorStore>()(
     }),
     {
       name: 'foundry-color-generator',
+      version: 1,
       partialize: (state) => ({
         accentColor: state.accentColor,
         wcagLevel: state.wcagLevel,

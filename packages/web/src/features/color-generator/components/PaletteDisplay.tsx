@@ -10,11 +10,19 @@ const COLOR_FAMILIES = [
   'info',
 ] as const;
 
-const ContrastBadge = ({ hex }: { hex: string }) => {
+const ContrastBadge = ({
+  hex,
+  background = '#ffffff',
+}: {
+  hex: string;
+  background?: string;
+}) => {
+  const { wcagLevel } = useColorGeneratorStore();
+
   const result = checkContrast({
     foreground: hex,
-    background: '#ffffff',
-    level: 'AA',
+    background,
+    level: wcagLevel,
   });
 
   return (
@@ -22,7 +30,7 @@ const ContrastBadge = ({ hex }: { hex: string }) => {
       variant={result.passes ? 'default' : 'destructive'}
       className="text-[10px] px-1 py-0"
     >
-      {result.ratio}:1
+      {result.ratio}:1 {result.passes ? '✓' : '✗'}
     </Badge>
   );
 };

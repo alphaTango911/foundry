@@ -29,11 +29,12 @@ export const ColorInput = () => {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h1 className="text-2xl font-semibold tracking-tight">Foundry</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Pick an accent color. Get a complete, accessible design token system.
-        </p>
-      </div>
+  <h1 className="text-2xl font-semibold tracking-tight">Foundry</h1>
+  <p className="text-sm text-muted-foreground mt-1">
+    Pick an accent color. Get a complete, accessible color token
+    system — light mode, dark mode, and WCAG checked.
+  </p>
+</div>
 
       <div className="flex flex-col gap-3">
         <Label>Accent color</Label>

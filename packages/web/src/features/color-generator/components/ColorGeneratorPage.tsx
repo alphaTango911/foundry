@@ -9,11 +9,12 @@ export const ColorGeneratorPage = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold tracking-tight">Foundry</h1>
-          <p className="text-muted-foreground mt-1">
-            Design system generator — pick a color, get a complete token system
-          </p>
-        </div>
+  <h1 className="text-3xl font-bold tracking-tight">Foundry</h1>
+  <p className="text-muted-foreground mt-1">
+    Accessible color system generator — pick a color, get a
+    complete token system ready for Figma, CSS, and production code.
+  </p>
+</div>
 
         <Separator className="mb-8" />
 
