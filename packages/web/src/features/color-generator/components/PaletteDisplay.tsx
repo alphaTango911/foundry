@@ -1,6 +1,6 @@
 import { useColorGeneratorStore } from '@/store/colorGenerator';
 import { Badge } from '@/components/ui/badge';
-import { checkContrast } from '@foundry/core';
+import { checkContrast, type ColorShade } from '@foundry/core';
 
 const COLOR_FAMILIES = [
   'primary',
@@ -86,18 +86,18 @@ export const PaletteDisplay = () => {
           <ShadeRow
             key={family}
             name={family}
-            shades={tokens[family].palette.shades.map((s) => ({
-              shade: s.shade,
-              hex: s.hex,
-            }))}
+            shades={tokens[family].palette.shades.map((s: ColorShade) => ({
+  shade: s.shade,
+  hex: s.hex,
+}))}
           />
         ))}
         <ShadeRow
           name="neutral"
-          shades={tokens.neutral.palette.shades.map((s) => ({
-            shade: s.shade,
-            hex: s.hex,
-          }))}
+          shades={tokens.neutral.palette.shades.map((s: ColorShade) => ({
+  shade: s.shade,
+  hex: s.hex,
+}))}
         />
       </div>
 
