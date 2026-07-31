@@ -1,8 +1,8 @@
 import { HexColorPicker } from 'react-colorful';
+import { useState } from 'react';
 import { useColorGeneratorStore } from '@/store/colorGenerator';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import {
   Select,
   SelectContent,
@@ -10,6 +10,11 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { validateHex } from '@foundry/core';
 
 export const ColorInput = () => {
@@ -23,81 +28,74 @@ export const ColorInput = () => {
     generate,
   } = useColorGeneratorStore();
 
+  const [pickerOpen, setPickerOpen] = useState(false);
   const hexValidation = validateHex(accentColor);
   const isValidHex = hexValidation.valid;
 
   return (
-    <div className="flex flex-col gap-6">
-      <div>
-  <h1 className="text-2xl font-semibold tracking-tight">Foundry</h1>
-  <p className="text-sm text-muted-foreground mt-1">
-    Pick an accent color. Get a complete, accessible color token
-    system — light mode, dark mode, and WCAG checked.
-  </p>
-</div>
+    <div className="flex items-center gap-3 w-full">
+      {/* Brand */}
+      <span className="font-semibold text-base shrink-0">Foundry</span>
 
-      <div className="flex flex-col gap-3">
-        <Label>Accent color</Label>
-        <div className="rounded-lg overflow-hidden border">
+      <div className="w-px h-5 bg-border shrink-0" />
+
+      {/* Color picker popover */}
+      <Popover open={pickerOpen} onOpenChange={setPickerOpen}>
+        <PopoverTrigger>
+  <div
+    className="w-8 h-8 rounded-md border border-border shrink-0 cursor-pointer"
+    style={{
+      backgroundColor: isValidHex
+        ? (hexValidation.value ?? accentColor)
+        : '#3a5afe',
+    }}
+    aria-label="Open color picker"
+  />
+</PopoverTrigger>
+        <PopoverContent className="w-auto p-3" align="start">
           <HexColorPicker
             color={isValidHex ? (hexValidation.value ?? accentColor) : '#3a5afe'}
             onChange={setAccentColor}
-            style={{ width: '100%', height: '200px' }}
           />
-        </div>
-      </div>
+        </PopoverContent>
+      </Popover>
 
-      <div className="flex flex-col gap-2">
-        <Label htmlFor="hex-input">Hex value</Label>
-        <Input
-          id="hex-input"
-          value={accentColor}
-          onChange={(e) => setAccentColor(e.target.value)}
-          placeholder="#3a5afe"
-          className={
-            !isValidHex && accentColor !== ''
-              ? 'border-destructive'
-              : ''
-          }
-        />
-        {!isValidHex && accentColor !== '' && (
-          <p className="text-xs text-destructive">{hexValidation.error}</p>
-        )}
-      </div>
+      {/* Hex input */}
+      <Input
+        value={accentColor}
+        onChange={(e) => setAccentColor(e.target.value)}
+        placeholder="#3a5afe"
+        className={`w-32 font-mono text-lg ${
+          !isValidHex && accentColor !== '' ? 'border-destructive' : ''
+        }`}
+      />
 
-      <div className="flex flex-col gap-2">
-        <Label>Accessibility target</Label>
-        <Select
-          value={wcagLevel}
-          onValueChange={(value) => setWcagLevel(value as 'AA' | 'AAA')}
-        >
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="AA">AA — minimum (4.5:1 ratio)</SelectItem>
-            <SelectItem value="AAA">AAA — enhanced (7:1 ratio)</SelectItem>
-          </SelectContent>
-        </Select>
-        <p className="text-xs text-muted-foreground">
-          WCAG AA is required by law in many countries.
-        </p>
-      </div>
+      {/* WCAG selector */}
+      <Select
+        value={wcagLevel}
+        onValueChange={(value) => setWcagLevel(value as 'AA' | 'AAA')}
+      >
+        <SelectTrigger className="w-24">
+          <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="AA">WCAG AA</SelectItem>
+          <SelectItem value="AAA">WCAG AAA</SelectItem>
+        </SelectContent>
+      </Select>
 
-      {error && (
-        <p className="text-sm text-destructive bg-destructive/10 px-3 py-2 rounded-md">
-          {error}
-        </p>
-      )}
-
+      {/* Generate button */}
       <Button
         onClick={generate}
         disabled={!isValidHex || isGenerating}
-        size="lg"
-        className="w-full"
       >
-        {isGenerating ? 'Generating...' : 'Generate design system'}
+        {isGenerating ? 'Generating...' : 'Generate'}
       </Button>
+
+      {/* Error */}
+      {error && (
+        <p className="text-lg text-destructive shrink-0">{error}</p>
+      )}
     </div>
   );
 };

@@ -1,46 +1,28 @@
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Separator } from '@/components/ui/separator';
-import { ColorInput } from './ColorInput';
-import { PaletteDisplay } from './PaletteDisplay';
-import { ExportPanel } from './ExportPanel';
+import { ColorInput } from "./ColorInput";
+import { PaletteDisplay } from "./PaletteDisplay";
+import { ExportPanel } from "./ExportPanel";
 
 export const ColorGeneratorPage = () => {
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        <div className="mb-8">
-  <h1 className="text-3xl font-bold tracking-tight">Foundry</h1>
-  <p className="text-muted-foreground mt-1">
-    Accessible color system generator — pick a color, get a
-    complete token system ready for Figma, CSS, and production code.
-  </p>
-</div>
-
-        <Separator className="mb-8" />
-
-        <div className="grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-8">
-          <div className="lg:sticky lg:top-8 lg:self-start">
-            <ColorInput />
-          </div>
-
-          <div>
-            <Tabs defaultValue="palette">
-              <TabsList>
-                <TabsTrigger value="palette">Palette</TabsTrigger>
-                <TabsTrigger value="export">Export</TabsTrigger>
-              </TabsList>
-
-              <TabsContent value="palette" className="mt-6">
-                <PaletteDisplay />
-              </TabsContent>
-
-              <TabsContent value="export" className="mt-6">
-                <ExportPanel />
-              </TabsContent>
-            </Tabs>
-          </div>
+    <div className="min-h-screen bg-background flex flex-col">
+      {/* Top bar */}
+      <header className="border-b bg-background sticky top-0 z-10">
+        <div className="max-w-6xl mx-auto px-8 py-6">
+          <ColorInput />
         </div>
-      </div>
+      </header>
+
+      {/* Palette */}
+      <main className="flex-1 max-w-6xl mx-auto w-full px-8 py-20">
+        <PaletteDisplay />
+      </main>
+
+      {/* Export bar */}
+      <footer className="border-t bg-background sticky bottom-0">
+        <div className="max-w-6xl mx-auto px-8 py-6">
+          <ExportPanel />
+        </div>
+      </footer>
     </div>
   );
 };
