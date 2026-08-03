@@ -78,10 +78,10 @@ web_modules/
 .next
 out
 
-# Nuxt.js build / generate output
-.nuxt
+# Build output — ignore compiled JS/TS but keep generated CSS tokens
 dist
-.output
+!packages/core/dist/
+!packages/core/dist/tokens.css
 
 # Gatsby files
 .cache/

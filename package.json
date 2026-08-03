@@ -10,6 +10,8 @@
     "dev:core": "yarn workspace @foundry/core dev",
     "build:web": "yarn workspace @foundry/web build",
     "dev:web": "yarn workspace @foundry/web dev",
+    "build:tokens": "yarn workspace @foundry/core build:tokens",
+    "build:tokens:custom": "yarn workspace @foundry/core build:tokens:custom",
     "build:all": "yarn workspaces run build",
     "test": "yarn workspaces run test",
     "lint": "yarn workspaces run lint",

@@ -5,23 +5,24 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-  ".": {
-    "import": "./dist/index.js",
-    "types": "./dist/index.d.ts"
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./css": "./dist/tokens.css",
+    "./themes/light": {
+      "import": "./dist/themes/light.js",
+      "types": "./dist/themes/light.d.ts"
+    },
+    "./themes/dark": {
+      "import": "./dist/themes/dark.js",
+      "types": "./dist/themes/dark.d.ts"
+    }
   },
-  "./css": "./dist/tokens.css",
-  "./themes/light": {
-    "import": "./dist/themes/light.js",
-    "types": "./dist/themes/light.d.ts"
-  },
-  "./themes/dark": {
-    "import": "./dist/themes/dark.js",
-    "types": "./dist/themes/dark.d.ts"
-  }
-},
-
   "scripts": {
-    "build": "tsc && node scripts/build.js",
+    "build": "tsc --noEmit false --outDir dist && node scripts/build.js",
+    "build:tokens": "npx tsx scripts/build.ts",
+    "build:tokens:custom": "npx tsx scripts/build.ts --accent",
     "dev": "tsc --watch",
     "test": "vitest run",
     "test:watch": "vitest",
@@ -30,9 +31,10 @@
     "format:fix": "prettier --write src"
   },
   "devDependencies": {
-    "typescript": "^5.4.0",
-    "vitest": "^1.6.0",
+    "eslint": "^9.0.0",
     "prettier": "^3.2.0",
-    "eslint": "^9.0.0"
+    "tsx": "^4.23.5",
+    "typescript": "^5.4.0",
+    "vitest": "^1.6.0"
   }
 }
