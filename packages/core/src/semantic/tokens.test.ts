@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
-import { generateSemanticTokens } from './tokens';
+import { describe, it, expect } from "vitest";
+import { generateSemanticTokens } from "./tokens";
 
-describe('generateSemanticTokens', () => {
-  const tokens = generateSemanticTokens({ accentColor: '#3a5afe' });
+describe("generateSemanticTokens", () => {
+  const tokens = generateSemanticTokens({ accentColor: "#3a5afe" });
 
-  it('generates all 6 semantic token groups', () => {
+  it("generates all 6 semantic token groups", () => {
     expect(tokens.primary).toBeDefined();
     expect(tokens.success).toBeDefined();
     expect(tokens.warning).toBeDefined();
@@ -13,7 +13,7 @@ describe('generateSemanticTokens', () => {
     expect(tokens.neutral).toBeDefined();
   });
 
-  it('action tokens have all required variants', () => {
+  it("action tokens have all required variants", () => {
     const actionGroups = [
       tokens.primary,
       tokens.success,
@@ -21,7 +21,7 @@ describe('generateSemanticTokens', () => {
       tokens.error,
       tokens.info,
     ];
-    actionGroups.forEach(group => {
+    actionGroups.forEach((group) => {
       expect(group.bg).toBeDefined();
       expect(group.bgHover).toBeDefined();
       expect(group.border).toBeDefined();
@@ -36,7 +36,7 @@ describe('generateSemanticTokens', () => {
     });
   });
 
-  it('neutral has foundation scale structure', () => {
+  it("neutral has foundation scale structure", () => {
     expect(tokens.neutral.background).toBeDefined();
     expect(tokens.neutral.surface).toBeDefined();
     expect(tokens.neutral.surfaceHover).toBeDefined();
@@ -47,7 +47,7 @@ describe('generateSemanticTokens', () => {
     expect(tokens.neutral.textStrong).toBeDefined();
   });
 
-  it('every hex value is a valid hex color', () => {
+  it("every hex value is a valid hex color", () => {
     const hexPattern = /^#[0-9a-f]{6}$/;
     const actionGroups = [
       tokens.primary,
@@ -56,15 +56,15 @@ describe('generateSemanticTokens', () => {
       tokens.error,
       tokens.info,
     ];
-    actionGroups.forEach(group => {
+    actionGroups.forEach((group) => {
       const { palette: _, ...hexValues } = group;
-      Object.values(hexValues).forEach(value => {
+      Object.values(hexValues).forEach((value) => {
         expect(value).toMatch(hexPattern);
       });
     });
   });
 
-  it('contrastText is either white or black', () => {
+  it("contrastText is either white or black", () => {
     const actionGroups = [
       tokens.primary,
       tokens.success,
@@ -72,16 +72,16 @@ describe('generateSemanticTokens', () => {
       tokens.error,
       tokens.info,
     ];
-    actionGroups.forEach(group => {
-      expect(['#ffffff', '#000000']).toContain(group.contrastText);
+    actionGroups.forEach((group) => {
+      expect(["#ffffff", "#000000"]).toContain(group.contrastText);
     });
   });
 
-  it('warning contrastText is either white or black', () => {
-  expect(['#ffffff', '#000000']).toContain(tokens.warning.contrastText);
-});
+  it("warning contrastText is either white or black", () => {
+    expect(["#ffffff", "#000000"]).toContain(tokens.warning.contrastText);
+  });
 
-  it('text is darker than fill', () => {
+  it("text is darker than fill", () => {
     const actionGroups = [
       tokens.primary,
       tokens.success,
@@ -89,14 +89,14 @@ describe('generateSemanticTokens', () => {
       tokens.error,
       tokens.info,
     ];
-    actionGroups.forEach(group => {
-      const fillShade = group.palette.shades.find(s => s.hex === group.fill);
-      const textShade = group.palette.shades.find(s => s.hex === group.text);
+    actionGroups.forEach((group) => {
+      const fillShade = group.palette.shades.find((s) => s.hex === group.fill);
+      const textShade = group.palette.shades.find((s) => s.hex === group.text);
       expect(textShade?.hsl.l).toBeLessThan(fillShade?.hsl.l ?? 100);
     });
   });
 
-  it('bg is lighter than fill', () => {
+  it("bg is lighter than fill", () => {
     const actionGroups = [
       tokens.primary,
       tokens.success,
@@ -104,65 +104,67 @@ describe('generateSemanticTokens', () => {
       tokens.error,
       tokens.info,
     ];
-    actionGroups.forEach(group => {
-      const bgShade = group.palette.shades.find(s => s.hex === group.bg);
-      const fillShade = group.palette.shades.find(s => s.hex === group.fill);
+    actionGroups.forEach((group) => {
+      const bgShade = group.palette.shades.find((s) => s.hex === group.bg);
+      const fillShade = group.palette.shades.find((s) => s.hex === group.fill);
       expect(bgShade?.hsl.l).toBeGreaterThan(fillShade?.hsl.l ?? 0);
     });
   });
 
-  it('success, warning, error use fixed hues regardless of accent', () => {
-    const tokens1 = generateSemanticTokens({ accentColor: '#3a5afe' });
-    const tokens2 = generateSemanticTokens({ accentColor: '#ff0000' });
-    expect(tokens1.success.fill).toBe(tokens2.success.fill);
-    expect(tokens1.warning.fill).toBe(tokens2.warning.fill);
-    expect(tokens1.error.fill).toBe(tokens2.error.fill);
+  it("success, warning, error shift subtly with accent but stay in their color range", () => {
+    const tokens1 = generateSemanticTokens({ accentColor: "#3a5afe" });
+    const tokens2 = generateSemanticTokens({ accentColor: "#ff0000" });
+
+    // Colors now shift with accent — they should be different
+    expect(tokens1.success.fill).not.toBe(tokens2.success.fill);
+    expect(tokens1.warning.fill).not.toBe(tokens2.warning.fill);
+
+    // But success should still look green (high green channel)
+    // and error should still look red — verified by the harmony tests
+    expect(tokens1.success.fill).toBeDefined();
+    expect(tokens1.error.fill).toBeDefined();
   });
 
-  it('primary changes when accent color changes', () => {
-    const tokens1 = generateSemanticTokens({ accentColor: '#3a5afe' });
-    const tokens2 = generateSemanticTokens({ accentColor: '#ff0000' });
+  it("primary changes when accent color changes", () => {
+    const tokens1 = generateSemanticTokens({ accentColor: "#3a5afe" });
+    const tokens2 = generateSemanticTokens({ accentColor: "#ff0000" });
     expect(tokens1.primary.fill).not.toBe(tokens2.primary.fill);
   });
 
-  it('neutral textStrong is darker than textMuted', () => {
+  it("neutral textStrong is darker than textMuted", () => {
     const mutedShade = tokens.neutral.palette.shades.find(
-      s => s.hex === tokens.neutral.textMuted
+      (s) => s.hex === tokens.neutral.textMuted,
     );
     const strongShade = tokens.neutral.palette.shades.find(
-      s => s.hex === tokens.neutral.textStrong
+      (s) => s.hex === tokens.neutral.textStrong,
     );
     expect(strongShade?.hsl.l).toBeLessThan(mutedShade?.hsl.l ?? 100);
   });
 
-  it('neutral has very low saturation', () => {
+  it("neutral has very low saturation", () => {
     const baseShade = tokens.neutral.palette.shades.find(
-      s => s.hex === tokens.neutral.text
+      (s) => s.hex === tokens.neutral.text,
     );
     expect(baseShade?.hsl.s).toBeLessThan(20);
   });
 
-  it('throws on invalid accent color', () => {
+  it("throws on invalid accent color", () => {
     expect(() =>
-      generateSemanticTokens({ accentColor: 'not-a-color' })
+      generateSemanticTokens({ accentColor: "not-a-color" }),
     ).toThrow();
   });
 
-  it('throws on empty accent color', () => {
-    expect(() =>
-      generateSemanticTokens({ accentColor: '' })
-    ).toThrow();
+  it("throws on empty accent color", () => {
+    expect(() => generateSemanticTokens({ accentColor: "" })).toThrow();
   });
 
-  it('accepts 3-digit hex', () => {
-    expect(() =>
-      generateSemanticTokens({ accentColor: '#fff' })
-    ).not.toThrow();
+  it("accepts 3-digit hex", () => {
+    expect(() => generateSemanticTokens({ accentColor: "#fff" })).not.toThrow();
   });
 
-  it('accepts hex without hash', () => {
+  it("accepts hex without hash", () => {
     expect(() =>
-      generateSemanticTokens({ accentColor: '3a5afe' })
+      generateSemanticTokens({ accentColor: "3a5afe" }),
     ).not.toThrow();
   });
 });

@@ -34,6 +34,8 @@ import {
 } from '../formula/hsl';
 import { validateHex } from '../formula/validation';
 import { getContrastRatio } from '../formula/contrast';
+import { hexToHsl } from '../formula/hsl';
+import { generateHarmoniousHues } from '../formula/harmony';
 
 // ─── Types ───────────────────────────────────────────────
 
@@ -126,32 +128,15 @@ export interface SemanticTokenSet {
  * Options for generating the full semantic token set.
  */
 export interface GenerateSemanticTokensOptions {
-  /**
-   * Your brand accent color as a hex string.
-   * e.g. '#3a5afe' or '#ff6b6b'
-   * This becomes your 'primary' token.
-   */
   accentColor: string;
+  /**
+   * How strongly the accent color influences semantic color hues.
+   * Range: 0.0 (no influence) to 0.3 (strong influence).
+   * Default: 0.12 — subtle but noticeable cohesion.
+   */
+  harmonyStrength?: number;
 }
 
-// ─── Fixed Hues ──────────────────────────────────────────
-
-/**
- * Fixed hue values for semantic colors.
- *
- * These hues are commonly used in digital product interfaces
- * to communicate status meaning. Only 'primary' comes from
- * the user's accent color — everything else is fixed because
- * a red 'success' or green 'error' would confuse users
- * regardless of branding.
- */
-const SEMANTIC_HUES = {
-  success: 142, // Green
-  warning: 45,  // Amber
-  error: 4,     // Red
-  info: 210,    // Blue
-  neutral: 220, // Blue-gray
-} as const;
 
 // ─── Helpers ─────────────────────────────────────────────
 
@@ -250,7 +235,7 @@ const paletteToNeutralScale = (
 export const generateSemanticTokens = (
   options: GenerateSemanticTokensOptions
 ): SemanticTokenSet => {
-  const { accentColor } = options;
+  const { accentColor, harmonyStrength } = options;
 
   const validation = validateHex(accentColor);
   if (!validation.valid) {
@@ -259,38 +244,51 @@ export const generateSemanticTokens = (
     );
   }
 
+const validHex = validation.value ?? accentColor;
+
+  // Extract hue from accent color for harmony calculation
+  const { h: accentHue } = hexToHsl(validHex);
+
+  // Generate harmonious hues for all semantic colors
+  // Each semantic color shifts slightly toward the accent hue
+  // while staying within its meaningful color range
+  const harmoniousHues = generateHarmoniousHues({
+    accentHue,
+    strength: harmonyStrength ?? 0.12,
+  });
+
   const primaryPalette = generatePaletteFromHex({
-    hex: validation.value ?? accentColor,
+    hex: validHex,
     name: 'primary',
   });
 
   const successPalette = generatePalette({
     name: 'success',
-    hue: SEMANTIC_HUES.success,
+    hue: harmoniousHues.success,
     baseSaturation: 70,
   });
 
   const warningPalette = generatePalette({
     name: 'warning',
-    hue: SEMANTIC_HUES.warning,
+    hue: harmoniousHues.warning,
     baseSaturation: 85,
   });
 
   const errorPalette = generatePalette({
     name: 'error',
-    hue: SEMANTIC_HUES.error,
+    hue: harmoniousHues.error,
     baseSaturation: 75,
   });
 
   const infoPalette = generatePalette({
     name: 'info',
-    hue: SEMANTIC_HUES.info,
+    hue: harmoniousHues.info,
     baseSaturation: 70,
   });
 
   const neutralPalette = generatePalette({
     name: 'neutral',
-    hue: SEMANTIC_HUES.neutral,
+    hue: harmoniousHues.neutral,
     baseSaturation: 15,
   });
 
