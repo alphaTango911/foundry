@@ -80,6 +80,18 @@ export type {
   ValidationResult,
 } from './formula/validation';
 
+// ─── Color Harmony ───────────────────────────────────────
+
+export {
+  applyHarmony,
+  generateHarmoniousHues,
+  SEMANTIC_BASE_HUES,
+} from './formula/harmony';
+
+export type {
+  HarmonyConfig,
+} from './formula/harmony';
+
 // ─── Low-level API ───────────────────────────────────────
 
 export {
