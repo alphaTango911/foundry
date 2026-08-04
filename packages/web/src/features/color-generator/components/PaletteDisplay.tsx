@@ -19,11 +19,13 @@ const ContrastBadge = ({ hex }: { hex: string }) => {
 
   return (
     <span
-      className={`text-[16px] font-mono ${
-  result.passes ? 'text-green-600' : 'text-red-500'
-}`}
+      className={`text-xs font-mono ${
+        result.passes ? 'text-green-600' : 'text-red-500'
+      }`}
+      title={result.passes ? `Passes ${wcagLevel}` : `Fails ${wcagLevel}`}
+      aria-label={`Contrast ratio ${result.ratio}:1 — ${result.passes ? 'passes' : 'fails'} WCAG ${wcagLevel}`}
     >
-      {result.ratio}
+      {result.ratio}:1
     </span>
   );
 };
@@ -40,11 +42,11 @@ const PaletteRow = ({
   <div className="flex items-center gap-3">
     {/* Label */}
     <div className="w-24 shrink-0">
-  <p className="text-lg font-medium capitalize text-foreground">{name}</p>
-  <p className="text-[16px] font-mono text-muted-foreground truncate">
-    {baseHex}
-  </p>
-</div>
+      <p className="text-lg font-medium capitalize text-foreground">{name}</p>
+      <p className="text-[16px] font-mono text-muted-foreground truncate">
+        {baseHex}
+      </p>
+    </div>
 
     {/* Swatches */}
     <div className="flex gap-1 flex-1">
@@ -56,7 +58,7 @@ const PaletteRow = ({
           <div
             className="w-full h-24 rounded cursor-pointer hover:scale-105 transition-transform"
             style={{ backgroundColor: s.hex }}
-            title={`${name}-${s.shade}: ${s.hex}`}
+            title={`${name}-${s.shade}: ${s.hex} — click to copy`}
             onClick={() => navigator.clipboard.writeText(s.hex)}
           />
           <ContrastBadge hex={s.hex} />
