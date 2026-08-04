@@ -75,7 +75,7 @@ export const ColorInput = () => {
         value={wcagLevel}
         onValueChange={(value) => setWcagLevel(value as 'AA' | 'AAA')}
       >
-        <SelectTrigger className="w-24">
+        <SelectTrigger className="w-32">
           <SelectValue />
         </SelectTrigger>
         <SelectContent>

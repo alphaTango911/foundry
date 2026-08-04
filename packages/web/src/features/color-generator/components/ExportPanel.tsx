@@ -75,28 +75,16 @@ module.exports = {
 
       <div className="w-px h-4 bg-border shrink-0" />
 
-      <Button
-        variant="outline"
-        size="lg"
-        onClick={() => copy(combinedCSS ?? '', 'css')}
-      >
-        {copiedKey === 'css' ? '✓ Copied' : 'Copy CSS'}
+      <Button variant="outline" size="lg" onClick={() => copy(combinedCSS ?? '', 'css')}>
+        {copiedKey === 'css' ? '✓ Copied!' : 'Copy CSS'}
       </Button>
 
-      <Button
-        variant="outline"
-        size="lg"
-        onClick={() => copy(tailwindConfig, 'tailwind')}
-      >
-        {copiedKey === 'tailwind' ? '✓ Copied' : 'Copy Tailwind'}
+      <Button variant="outline" size="lg" onClick={() => copy(tailwindConfig, 'tailwind')}>
+        {copiedKey === 'tailwind' ? '✓ Copied!' : 'Copy Tailwind'}
       </Button>
 
-      <Button
-        variant="outline"
-        size="lg"
-        onClick={() => copy(tokensJson, 'json')}
-      >
-        {copiedKey === 'json' ? '✓ Copied' : 'Copy JSON'}
+      <Button variant="outline" size="lg" onClick={() => copy(tokensJson, 'json')}>
+        {copiedKey === 'json' ? '✓ Copied!' : 'Copy JSON'}
       </Button>
 
       <div className="w-px h-4 bg-border shrink-0" />

@@ -4,6 +4,7 @@ import {
   generateSemanticTokens,
   generateThemeCSS,
   validateHex,
+  hexToHsl,
   type SemanticTokenSet,
   type WCAGLevel,
 } from '@foundry/core';
@@ -23,6 +24,16 @@ interface ColorGeneratorStore {
   reset: () => void;
 }
 
+/**
+ * Checks if a color is achromatic (black, white, or gray).
+ * Achromatic colors have saturation near 0 — no meaningful hue.
+ * The engine would extract hue 0° (red) which is misleading.
+ */
+const isAchromatic = (hex: string): boolean => {
+  const { s } = hexToHsl(hex);
+  return s < 10;
+};
+
 export const useColorGeneratorStore = create<ColorGeneratorStore>()(
   persist(
     (set, get) => ({
@@ -37,6 +48,36 @@ export const useColorGeneratorStore = create<ColorGeneratorStore>()(
 
       setAccentColor: (color: string) => {
         set({ accentColor: color, error: null });
+
+        // Auto-generate on every valid color change (live update)
+        const validation = validateHex(color);
+        if (!validation.valid) return;
+
+        const cleanHex = validation.value ?? color;
+
+        // Warn user if color has no meaningful hue
+        if (isAchromatic(cleanHex)) {
+          set({
+            error: '⚠️ This color has no hue (black, white, or gray). Try a color with some saturation for a meaningful palette.',
+          });
+          return;
+        }
+
+        try {
+          const tokens: SemanticTokenSet = generateSemanticTokens({
+            accentColor: cleanHex,
+          });
+          const { light, dark, combined } = generateThemeCSS(tokens);
+          set({
+            tokens,
+            lightCSS: light,
+            darkCSS: dark,
+            combinedCSS: combined,
+            error: null,
+          });
+        } catch {
+          // Silent fail during live drag — don't interrupt the user
+        }
       },
 
       setWcagLevel: (level: WCAGLevel) => {
@@ -57,10 +98,19 @@ export const useColorGeneratorStore = create<ColorGeneratorStore>()(
             return;
           }
 
-          const tokens: SemanticTokenSet = generateSemanticTokens({
-            accentColor: validation.value ?? accentColor,
-          });
+          const cleanHex = validation.value ?? accentColor;
 
+          if (isAchromatic(cleanHex)) {
+            set({
+              isGenerating: false,
+              error: '⚠️ This color has no hue. Try a color with some saturation for a meaningful palette.',
+            });
+            return;
+          }
+
+          const tokens: SemanticTokenSet = generateSemanticTokens({
+            accentColor: cleanHex,
+          });
           const { light, dark, combined } = generateThemeCSS(tokens);
 
           set({
@@ -74,9 +124,7 @@ export const useColorGeneratorStore = create<ColorGeneratorStore>()(
         } catch (err) {
           set({
             isGenerating: false,
-            error: err instanceof Error
-              ? err.message
-              : 'Something went wrong',
+            error: err instanceof Error ? err.message : 'Something went wrong',
           });
         }
       },
