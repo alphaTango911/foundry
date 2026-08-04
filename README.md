@@ -14,11 +14,10 @@ ready for Figma, CSS, Tailwind, and production code.
 | Package | Description | Status |
 |---|---|---|
 | [`@foundry/core`](./packages/core) | HSL color engine, WCAG contrast checker, semantic token generator | ✅ Complete |
-| [`@foundry/web`](./packages/web) | React web app — the main product UI | ✅ Live |
-| [`packages/angular-demo`](./packages/angular-demo) | Angular demo — proves the token system is framework-agnostic | ✅ Complete |
-| `@foundry/figma` | Figma plugin | 📋 Planned |
-| `@foundry/cli` | CLI tool — `npx foundry generate` | 📋 Planned |
-| [`packages/angular-demo`](./packages/angular-demo) | Angular demo — proves framework-agnostic tokens | ✅ [Live](https://foundry-angular-demo.vercel.app/) |
+| [`@foundry/web`](./packages/web) | React web app — the main product UI | ✅ [Live](https://foundry-web-lilac.vercel.app/) |
+| [`@foundry/angular-demo`](./packages/angular-demo) | Angular demo — proves framework-agnostic tokens | ✅ [Live](https://foundry-angular-demo.vercel.app/) |
+| `@foundry/figma` | Figma plugin | 📋 Phase 2 |
+| `@foundry/cli` | CLI tool — `npx foundry generate` | 📋 Phase 3 |
 
 ---
 

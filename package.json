@@ -11,13 +11,12 @@
     "build:web": "yarn workspace @foundry/web build",
     "dev:web": "yarn workspace @foundry/web dev",
     "build:tokens": "yarn workspace @foundry/core build:tokens",
-    "build:tokens:custom": "yarn workspace @foundry/core build:tokens:custom",
+    "dev:angular": "cd packages/angular-demo && ng serve",
+    "build:angular": "cd packages/angular-demo && ng build",
     "build:all": "yarn workspaces run build",
     "test": "yarn workspaces run test",
     "lint": "yarn workspaces run lint",
-    "format:fix": "yarn workspaces run format:fix",
-    "dev:angular": "cd packages/angular-demo && ng serve",
-"build:angular": "cd packages/angular-demo && ng build"
+    "format:fix": "yarn workspaces run format:fix"
   },
   "devDependencies": {
     "autoprefixer": "^10.5.0",
