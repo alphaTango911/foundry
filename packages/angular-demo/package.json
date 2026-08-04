@@ -1,8 +1,9 @@
 {
-  "name": "angular-demo",
+  "name": "@foundry/angular-demo",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "prestart": "cd ../core && npx tsx scripts/build.ts && cp dist/tokens.css ../angular-demo/src/foundry-tokens.css",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
