@@ -17,16 +17,19 @@ import { ThemeToggleComponent } from './components/theme-toggle/theme-toggle.com
   ],
   template: `
     <div class="container">
-      <header class="header">
-        <div>
-          <h1>Foundry <span class="tag">Angular Demo</span></h1>
-          <p class="subtitle">
-            The same token system that powers the React app,
-            driving these Angular components. Zero changes to the engine.
-          </p>
-        </div>
-        <app-theme-toggle />
-      </header>
+    <header class="header">
+    <div>
+      <h1>Foundry <span class="tag">Angular Demo</span></h1>
+      <p class="subtitle">
+        The same token system that powers the
+        <a href="https://foundry-web-lilac.vercel.app/" target="_blank" class="link">
+          React app
+        </a>
+        — driving these Angular components. Zero changes to the engine.
+      </p>
+    </div>
+    <app-theme-toggle />
+  </header>
 
       <section class="section">
         <h2>Buttons</h2>
@@ -163,6 +166,14 @@ border-color: var(--color-neutral-border);</pre>
       white-space: pre;
       overflow-x: auto;
       margin: 0.5rem 0;
+    }
+    .link {
+      color: var(--color-primary-text);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .link:hover {
+      color: var(--color-primary-fill);
     }
     @media (max-width: 640px) {
       .inputs-grid, .cards-grid { grid-template-columns: 1fr; }
