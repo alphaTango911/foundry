@@ -94,6 +94,26 @@ const result = checkContrast({
 
 ---
 
+## Framework support
+
+`@foundry/core` outputs standard CSS custom properties via `dist/tokens.css`.
+This file works in any framework:
+
+```bash
+# React (via Tailwind or direct import)
+import './tokens.css'
+
+# Angular (via styles.scss)
+@import './foundry-tokens.css';
+
+# Vue, Svelte, vanilla HTML — same pattern
+```
+
+See [`packages/angular-demo`](../angular-demo) for a working Angular example.
+
+
+---
+
 ## Output
 
 Running `yarn build` generates:
