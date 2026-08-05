@@ -17,7 +17,7 @@
     "noUnusedParameters": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@foundry/core": ["../core/src/index.ts"]
+      "@foundry-ds/core": ["../core/src/index.ts"]
     }
   },
   "include": ["src"]

@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { validateHex } from '@foundry/core';
+import { validateHex } from '@foundry-ds/core';
 
 export const ColorInput = () => {
   const {

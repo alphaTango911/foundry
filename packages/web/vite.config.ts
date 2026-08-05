@@ -7,7 +7,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
-      '@foundry/core': path.resolve(__dirname, '../core/src/index.ts'),
+      '@foundry-ds/core': path.resolve(__dirname, '../core/src/index.ts'),
     },
   },
 });

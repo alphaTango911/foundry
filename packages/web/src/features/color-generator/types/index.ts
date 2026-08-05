@@ -1,4 +1,4 @@
-import type { SemanticTokenSet, WCAGLevel } from '@foundry/core';
+import type { SemanticTokenSet, WCAGLevel } from '@foundry-ds/core';
 
 export interface ColorGeneratorState {
   accentColor: string;

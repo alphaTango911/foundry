@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useColorGeneratorStore } from '@/store/colorGenerator';
-import { checkContrast, type ColorShade } from '@foundry/core';
+import { checkContrast, type ColorShade } from '@foundry-ds/core';
 
 const COLOR_FAMILIES = [
   'primary',

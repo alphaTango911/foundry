@@ -7,7 +7,7 @@ import {
   hexToHsl,
   type SemanticTokenSet,
   type WCAGLevel,
-} from '@foundry/core';
+} from '@foundry-ds/core';
 
 interface ColorGeneratorStore {
   accentColor: string;
