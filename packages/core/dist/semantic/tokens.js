@@ -28,23 +28,8 @@
 import { generatePalette, generatePaletteFromHex, } from '../formula/hsl';
 import { validateHex } from '../formula/validation';
 import { getContrastRatio } from '../formula/contrast';
-// ─── Fixed Hues ──────────────────────────────────────────
-/**
- * Fixed hue values for semantic colors.
- *
- * These hues are commonly used in digital product interfaces
- * to communicate status meaning. Only 'primary' comes from
- * the user's accent color — everything else is fixed because
- * a red 'success' or green 'error' would confuse users
- * regardless of branding.
- */
-const SEMANTIC_HUES = {
-    success: 142, // Green
-    warning: 45, // Amber
-    error: 4, // Red
-    info: 210, // Blue
-    neutral: 220, // Blue-gray
-};
+import { hexToHsl } from '../formula/hsl';
+import { generateHarmoniousHues } from '../formula/harmony';
 // ─── Helpers ─────────────────────────────────────────────
 /**
  * Gets a specific shade from a palette by shade number.
@@ -127,38 +112,48 @@ const paletteToNeutralScale = (palette) => ({
  * because yellow is light and black text is more readable on it.
  */
 export const generateSemanticTokens = (options) => {
-    const { accentColor } = options;
+    const { accentColor, harmonyStrength } = options;
     const validation = validateHex(accentColor);
     if (!validation.valid) {
         throw new Error(`generateSemanticTokens: invalid accent color — ${validation.error}`);
     }
+    const validHex = validation.value ?? accentColor;
+    // Extract hue from accent color for harmony calculation
+    const { h: accentHue } = hexToHsl(validHex);
+    // Generate harmonious hues for all semantic colors
+    // Each semantic color shifts slightly toward the accent hue
+    // while staying within its meaningful color range
+    const harmoniousHues = generateHarmoniousHues({
+        accentHue,
+        strength: harmonyStrength ?? 0.12,
+    });
     const primaryPalette = generatePaletteFromHex({
-        hex: validation.value ?? accentColor,
+        hex: validHex,
         name: 'primary',
     });
     const successPalette = generatePalette({
         name: 'success',
-        hue: SEMANTIC_HUES.success,
+        hue: harmoniousHues.success,
         baseSaturation: 70,
     });
     const warningPalette = generatePalette({
         name: 'warning',
-        hue: SEMANTIC_HUES.warning,
+        hue: harmoniousHues.warning,
         baseSaturation: 85,
     });
     const errorPalette = generatePalette({
         name: 'error',
-        hue: SEMANTIC_HUES.error,
+        hue: harmoniousHues.error,
         baseSaturation: 75,
     });
     const infoPalette = generatePalette({
         name: 'info',
-        hue: SEMANTIC_HUES.info,
+        hue: harmoniousHues.info,
         baseSaturation: 70,
     });
     const neutralPalette = generatePalette({
         name: 'neutral',
-        hue: SEMANTIC_HUES.neutral,
+        hue: harmoniousHues.neutral,
         baseSaturation: 15,
     });
     return {

@@ -40,6 +40,8 @@ export { checkContrast, checkPaletteContrast, getContrastRatio, } from './formul
 export type { WCAGLevel, TextSize, ContrastResult, AccessibleSuggestion, ShadeContrastResult, } from './formula/contrast';
 export { validateHex, validateHue, validateSaturation, } from './formula/validation';
 export type { ValidationResult, } from './formula/validation';
+export { applyHarmony, generateHarmoniousHues, SEMANTIC_BASE_HUES, } from './formula/harmony';
+export type { HarmonyConfig, } from './formula/harmony';
 export { generatePalette, generatePaletteFromHex, hslToHex, hexToHsl, } from './formula/hsl';
 export type { HSLColor, ColorShade, ColorPalette, GeneratePaletteOptions, } from './formula/hsl';
 //# sourceMappingURL=index.d.ts.map

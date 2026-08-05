@@ -37,6 +37,8 @@ export { generateSemanticTokens, } from './semantic/tokens';
 export { generateThemeCSS, generateLightThemeCSS, generateDarkThemeCSS, } from './themes/css-exporter';
 export { checkContrast, checkPaletteContrast, getContrastRatio, } from './formula/contrast';
 export { validateHex, validateHue, validateSaturation, } from './formula/validation';
+// ─── Color Harmony ───────────────────────────────────────
+export { applyHarmony, generateHarmoniousHues, SEMANTIC_BASE_HUES, } from './formula/harmony';
 // ─── Low-level API ───────────────────────────────────────
 export { generatePalette, generatePaletteFromHex, hslToHex, hexToHsl, } from './formula/hsl';
 //# sourceMappingURL=index.js.map

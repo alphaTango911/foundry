@@ -140,7 +140,7 @@ const PaletteRow = ({
 };
 
 export const PaletteDisplay = () => {
-  const { tokens } = useColorGeneratorStore();
+  const { tokens, wcagLevel } = useColorGeneratorStore();
   const [previewMode, setPreviewMode] = useState<PreviewMode>('light');
 
   const background = PREVIEW_BACKGROUNDS[previewMode];
@@ -165,10 +165,17 @@ export const PaletteDisplay = () => {
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-base font-semibold">Color palette</h2>
-          <p className="text-xs text-muted-foreground mt-0.5">
-            Numbers show WCAG contrast ratio. Click swatch to copy hex.
-            Click name to copy all.
-          </p>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Click swatch to copy hex · Click color name to copy all 11 values
+            </p>
+            <div className="flex items-center gap-3 mt-1">
+              <span className="flex items-center gap-1 text-[10px] text-green-600">
+                ● Passes WCAG {wcagLevel}
+              </span>
+              <span className="flex items-center gap-1 text-[10px] text-red-500">
+                ● Fails — use for fills/backgrounds only
+              </span>
+            </div>
         </div>
 
         {/* Light / Dark toggle */}
