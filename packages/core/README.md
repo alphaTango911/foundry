@@ -1,4 +1,4 @@
-# @foundry/core
+# @foundry-ds/core
 
 The brain of Foundry. A pure TypeScript engine that generates a complete,
 accessible design token system from a single accent color.
@@ -67,7 +67,7 @@ with a simple scale reversal. No separate dark palette needed.
 ## Usage
 
 ```ts
-import { generatePalette } from '@foundry/core'
+import { generatePalette } from '@foundry-ds/core'
 
 const palette = generatePalette({
   hue: 210,
@@ -75,14 +75,14 @@ const palette = generatePalette({
 })
 // Returns blue-1 through blue-11 as HSL values
 
-import { generateSemanticTokens } from '@foundry/core'
+import { generateSemanticTokens } from '@foundry-ds/core'
 
 const tokens = generateSemanticTokens({
   accentColor: '#3a5afe'
 })
 // Returns { primary, success, warning, error, neutral }
 
-import { checkContrast } from '@foundry/core'
+import { checkContrast } from '@foundry-ds/core'
 
 const result = checkContrast({
   foreground: '#ffffff',
@@ -96,7 +96,7 @@ const result = checkContrast({
 
 ## Framework support
 
-`@foundry/core` outputs standard CSS custom properties via `dist/tokens.css`.
+`@foundry-ds/core` outputs standard CSS custom properties via `dist/tokens.css`.
 This file works in any framework:
 
 ```bash

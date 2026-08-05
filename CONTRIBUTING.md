@@ -55,7 +55,7 @@ fix(web): fix contrast badge display
 chore: update dependencies
 docs: update Angular demo README
 
-## Working on `@foundry/core`
+## Working on `@foundry-ds/core`
 
 All color math lives in `packages/core/src/formula/`.
 Every function must have tests in the corresponding `.test.ts` file.
