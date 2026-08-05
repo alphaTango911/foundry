@@ -5,7 +5,7 @@
 An open source design system generator for product designers and frontend engineers.
 
 Pick an accent color. Get a complete, accessible token system —
-ready for Figma, CSS, Tailwind, and production code.
+ready for Figma, CSS, Tailwind, W3C DTCG, and production code.
 
 **Live demo:** https://foundry-web-lilac.vercel.app/
 
@@ -16,10 +16,10 @@ ready for Figma, CSS, Tailwind, and production code.
 | Package | Description | Status |
 |---|---|---|
 | [`@foundry-ds/core`](./packages/core) | HSL color engine, WCAG contrast checker, semantic token generator | ✅ Complete |
-| [`@foundry/web`](./packages/web) | React web app — the main product UI | ✅ [Live](https://foundry-web-lilac.vercel.app/) |
-| [`@foundry/angular-demo`](./packages/angular-demo) | Angular demo — proves framework-agnostic tokens | ✅ [Live](https://foundry-angular-demo.vercel.app/) |
-| `@foundry/figma` | Figma plugin | 📋 Phase 2 |
-| `@foundry/cli` | CLI tool — `npx foundry generate` | 📋 Phase 3 |
+| [`@foundry-ds/web`](./packages/web) | React web app — the main product UI | ✅ [Live](https://foundry-web-lilac.vercel.app/) |
+| [`@foundry-ds/angular-demo`](./packages/angular-demo) | Angular demo — proves framework-agnostic tokens | ✅ [Live](https://foundry-angular-demo.vercel.app/) |
+| `@foundry-ds/figma` | Figma plugin | 📋 Phase 2 |
+| `@foundry-ds/cli` | CLI tool — `npx foundry generate` | 📋 Phase 3 |
 
 ---
 
@@ -47,7 +47,7 @@ Color harmony shifts semantic colors toward your accent hue
 Every shade is checked for WCAG contrast compliance
 Failing shades get the closest accessible alternative suggested
   ↓
-Export as CSS variables · Tailwind config · tokens.json
+Export as CSS variables · Tailwind config · tokens.json · W3C DTCG
 ```
 
 ---

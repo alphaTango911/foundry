@@ -44,4 +44,6 @@ export { applyHarmony, generateHarmoniousHues, SEMANTIC_BASE_HUES, } from './for
 export type { HarmonyConfig, } from './formula/harmony';
 export { generatePalette, generatePaletteFromHex, hslToHex, hexToHsl, } from './formula/hsl';
 export type { HSLColor, ColorShade, ColorPalette, GeneratePaletteOptions, } from './formula/hsl';
+export { tokensToDTCG, exportDTCG, exportDTCGThemes, } from './themes/dtcg-exporter';
+export type { DTCGToken, DTCGGroup, DTCGExportOptions, DTCGThemes, } from './themes/dtcg-exporter';
 //# sourceMappingURL=index.d.ts.map

@@ -118,5 +118,6 @@ See [`packages/angular-demo`](../angular-demo) for a working Angular example.
 
 Running `yarn build` generates:
 - `dist/tokens.css` — CSS custom properties for light + dark themes
+- W3C DTCG format (Style Dictionary / Tokens Studio compatible) — via `exportDTCG` / `exportDTCGThemes`
 - `dist/index.js` — JavaScript token objects for use in components
 - `dist/index.d.ts` — TypeScript types for full autocomplete
