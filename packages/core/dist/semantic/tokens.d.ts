@@ -112,12 +112,13 @@ export interface SemanticTokenSet {
  * Options for generating the full semantic token set.
  */
 export interface GenerateSemanticTokensOptions {
-    /**
-     * Your brand accent color as a hex string.
-     * e.g. '#3a5afe' or '#ff6b6b'
-     * This becomes your 'primary' token.
-     */
     accentColor: string;
+    /**
+     * How strongly the accent color influences semantic color hues.
+     * Range: 0.0 (no influence) to 0.3 (strong influence).
+     * Default: 0.12 — subtle but noticeable cohesion.
+     */
+    harmonyStrength?: number;
 }
 /**
  * Generates the full semantic token set from an accent color.

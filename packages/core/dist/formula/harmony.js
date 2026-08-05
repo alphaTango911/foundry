@@ -31,45 +31,19 @@
  * Shift: 120° × 0.1 = 12°
  * Adjusted success hue: 142° + 12° = 154° (slightly warmer green)
  */
-
-// ─── Types ───────────────────────────────────────────────
-
-/**
- * Configuration for color harmony.
- */
-export interface HarmonyConfig {
-  /**
-   * The hue of the user's accent color (0–360).
-   * Extracted from the accent hex color.
-   */
-  accentHue: number;
-
-  /**
-   * How strongly the accent hue influences semantic colors.
-   * Range: 0.0 (no influence) to 0.3 (strong influence).
-   * Default: 0.1 (subtle, safe for most brands).
-   *
-   * Keep this low — semantic colors must retain their meaning.
-   * A red success or green error would confuse users.
-   */
-  strength?: number;
-}
-
 /**
  * The base hues for each semantic color family.
  * These represent the "pure" meaning of each semantic color.
  * They are shifted by the harmony algorithm but never replaced.
  */
 export const SEMANTIC_BASE_HUES = {
-  success: 142, // Green — growth, positive, go
-  warning: 45,  // Amber — caution, attention
-  error: 4,     // Red — danger, stop, negative
-  info: 210,    // Blue — neutral information
-  neutral: 220, // Blue-gray — foundation, structure
-} as const;
-
+    success: 142, // Green — growth, positive, go
+    warning: 45, // Amber — caution, attention
+    error: 4, // Red — danger, stop, negative
+    info: 210, // Blue — neutral information
+    neutral: 220, // Blue-gray — foundation, structure
+};
 // ─── Core Algorithm ──────────────────────────────────────
-
 /**
  * Calculates the shortest angular distance between two hues.
  *
@@ -80,24 +54,22 @@ export const SEMANTIC_BASE_HUES = {
  * angularDistance(10, 350) → -20 (350 is 20° before 10°)
  * angularDistance(142, 262) → 120 (262 is 120° after 142°)
  */
-const angularDistance = (fromHue: number, toHue: number): number => {
-  let delta = toHue - fromHue;
-
-  // Normalize to -180 to +180 range
-  // This gives us the shortest path around the circle
-  if (delta > 180) delta -= 360;
-  if (delta < -180) delta += 360;
-
-  return delta;
+const angularDistance = (fromHue, toHue) => {
+    let delta = toHue - fromHue;
+    // Normalize to -180 to +180 range
+    // This gives us the shortest path around the circle
+    if (delta > 180)
+        delta -= 360;
+    if (delta < -180)
+        delta += 360;
+    return delta;
 };
-
 /**
  * Normalizes a hue to the 0–360 range.
  */
-const normalizeHue = (hue: number): number => {
-  return ((hue % 360) + 360) % 360;
+const normalizeHue = (hue) => {
+    return ((hue % 360) + 360) % 360;
 };
-
 /**
  * Applies harmony to a single semantic hue.
  *
@@ -108,28 +80,19 @@ const normalizeHue = (hue: number): number => {
  * No matter what accent color is chosen, green will always
  * read as green, red as red, etc.
  */
-export const applyHarmony = (
-  baseHue: number,
-  config: HarmonyConfig
-): number => {
-  const { accentHue, strength = 0.1 } = config;
-
-  // Clamp strength to safe range
-  const clampedStrength = Math.min(0.3, Math.max(0, strength));
-
-  // Calculate how far the accent is from the base semantic hue
-  const distance = angularDistance(baseHue, accentHue);
-
-  // Apply a fraction of that distance as a shift
-  const shift = distance * clampedStrength;
-
-  // Cap the maximum shift at 15° to preserve semantic meaning
-  const cappedShift = Math.max(-15, Math.min(15, shift));
-
-  // Apply the shift and normalize back to 0–360
-  return normalizeHue(baseHue + cappedShift);
+export const applyHarmony = (baseHue, config) => {
+    const { accentHue, strength = 0.1 } = config;
+    // Clamp strength to safe range
+    const clampedStrength = Math.min(0.3, Math.max(0, strength));
+    // Calculate how far the accent is from the base semantic hue
+    const distance = angularDistance(baseHue, accentHue);
+    // Apply a fraction of that distance as a shift
+    const shift = distance * clampedStrength;
+    // Cap the maximum shift at 15° to preserve semantic meaning
+    const cappedShift = Math.max(-15, Math.min(15, shift));
+    // Apply the shift and normalize back to 0–360
+    return normalizeHue(baseHue + cappedShift);
 };
-
 /**
  * Generates harmonious hues for all semantic colors
  * based on the accent color's hue.
@@ -145,14 +108,13 @@ export const applyHarmony = (
  *
  * The shifts are subtle but the palette feels cohesive.
  */
-export const generateHarmoniousHues = (
-  config: HarmonyConfig
-): { success: number; warning: number; error: number; info: number; neutral: number } => {
-  return {
-    success: applyHarmony(SEMANTIC_BASE_HUES.success, config),
-    warning: applyHarmony(SEMANTIC_BASE_HUES.warning, config),
-    error:   applyHarmony(SEMANTIC_BASE_HUES.error, config),
-    info:    applyHarmony(SEMANTIC_BASE_HUES.info, config),
-    neutral: applyHarmony(SEMANTIC_BASE_HUES.neutral, config),
-  };
+export const generateHarmoniousHues = (config) => {
+    return {
+        success: applyHarmony(SEMANTIC_BASE_HUES.success, config),
+        warning: applyHarmony(SEMANTIC_BASE_HUES.warning, config),
+        error: applyHarmony(SEMANTIC_BASE_HUES.error, config),
+        info: applyHarmony(SEMANTIC_BASE_HUES.info, config),
+        neutral: applyHarmony(SEMANTIC_BASE_HUES.neutral, config),
+    };
 };
+//# sourceMappingURL=harmony.js.map

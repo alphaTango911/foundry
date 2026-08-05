@@ -92,6 +92,10 @@ export const ColorInput = () => {
         {isGenerating ? 'Generating...' : 'Generate'}
       </Button>
 
+      <span className="text-xs text-muted-foreground shrink-0 hidden md:block">
+        Palette updates live as you pick
+      </span>
+
       {/* Error */}
       {error && (
         <p className="text-lg text-destructive shrink-0">{error}</p>

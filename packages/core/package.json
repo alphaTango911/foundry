@@ -1,5 +1,5 @@
 {
-  "name": "@foundry/core",
+  "name": "@foundry-ds/core",
   "version": "0.1.0",
   "description": "HSL color formula engine with WCAG contrast checking and semantic token generation",
   "main": "./dist/index.js",
@@ -19,8 +19,13 @@
       "types": "./dist/themes/dark.d.ts"
     }
   },
+  "files": [
+    "dist/",
+    "src/",
+    "README.md"
+  ],
   "scripts": {
-    "build": "tsc --noEmit false --outDir dist && node scripts/build.js",
+    "build": "tsc --project tsconfig.build.json",
     "build:tokens": "npx tsx scripts/build.ts",
     "build:tokens:custom": "npx tsx scripts/build.ts --accent",
     "dev": "tsc --watch",
