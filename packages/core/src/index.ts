@@ -107,3 +107,18 @@ export type {
   ColorPalette,
   GeneratePaletteOptions,
 } from './formula/hsl';
+
+// ─── DTCG Export ─────────────────────────────────────────
+
+export {
+  tokensToDTCG,
+  exportDTCG,
+  exportDTCGThemes,
+} from './themes/dtcg-exporter';
+
+export type {
+  DTCGToken,
+  DTCGGroup,
+  DTCGExportOptions,
+  DTCGThemes,
+} from './themes/dtcg-exporter';

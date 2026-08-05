@@ -41,4 +41,6 @@ export { validateHex, validateHue, validateSaturation, } from './formula/validat
 export { applyHarmony, generateHarmoniousHues, SEMANTIC_BASE_HUES, } from './formula/harmony';
 // ─── Low-level API ───────────────────────────────────────
 export { generatePalette, generatePaletteFromHex, hslToHex, hexToHsl, } from './formula/hsl';
+// ─── DTCG Export ─────────────────────────────────────────
+export { tokensToDTCG, exportDTCG, exportDTCGThemes, } from './themes/dtcg-exporter';
 //# sourceMappingURL=index.js.map
