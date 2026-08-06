@@ -1,6 +1,6 @@
 # Foundry
 
-[![npm version](https://badge.fury.io/js/%40foundry-ds%2Fcore.svg)](https://www.npmjs.com/package/@foundry-ds/core)
+[![npm](https://img.shields.io/npm/v/@foundry-ds/core?label=npm%20package&color=brightgreen)](https://www.npmjs.com/package/@foundry-ds/core)
 
 An open source design system generator for product designers and frontend engineers.
 
