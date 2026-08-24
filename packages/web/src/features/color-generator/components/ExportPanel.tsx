@@ -72,9 +72,10 @@ module.exports = {
     2
   );
 
-  // W3C DTCG format (tr.designtokens.org) — the token interchange standard
-  // read natively by Style Dictionary v4 and Tokens Studio, and consumable
-  // by AI coding agents as typed context for what "on-brand" means.
+  // DTCG format, stable spec 2025.10 (designtokens.org/tr/2025.10) — the
+  // token interchange standard read natively by Style Dictionary v4 and
+  // Tokens Studio, and consumable by AI coding agents as typed context
+  // for what "on-brand" means.
   const dtcgJson = exportDTCG(tokens);
 
   return (

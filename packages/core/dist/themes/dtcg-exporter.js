@@ -1,8 +1,9 @@
 /**
  * W3C DTCG Exporter
  *
- * Converts semantic token objects into the W3C Design Tokens Community
- * Group format (https://tr.designtokens.org/format/).
+ * Converts semantic token objects into the Design Tokens Community
+ * Group format, stable specification 2025.10
+ * (https://www.designtokens.org/tr/2025.10/).
  *
  * Why DTCG?
  * It is the interchange standard for token pipelines:
@@ -13,20 +14,46 @@
  *
  * Format essentials implemented here:
  * - Every token leaf carries "$type" and "$value"
+ * - Per the 2025.10 color module, "$value" for a color token is a
+ *   structured object — { colorSpace, components, hex } — not a bare
+ *   hex string. We use the "srgb" color space (Foundry's palettes are
+ *   generated in sRGB) and include "hex" as the optional fallback
+ *   field for tools that don't yet support structured color values.
  * - Groups are plain nested objects; "$type" declared at group level
  *   is inherited by children (we also declare it per leaf for clarity)
  * - "$description" documents intent, because a token's purpose is part
  *   of its contract — not just its value
  *
  * Theming note:
- * The DTCG spec does not yet standardize modes/themes (the resolver
- * spec is still in progress), so this follows the current community
- * convention: one document per theme, identical token paths in both.
+ * 2025.10 also stabilized a resolver module for modes/themes, but
+ * adopting it is a larger structural change than this exporter makes
+ * today. For now we still follow the simpler community convention of
+ * one document per theme with identical token paths in both.
  */
 // ─── Internal builders ───────────────────────────────────
+/**
+ * Converts a 6-digit hex string to normalized (0–1) sRGB components,
+ * per the DTCG 2025.10 color module's "srgb" color space.
+ * Assumes input has already been validated by validateHex().
+ * Rounded to 4 decimal places — enough precision to round-trip
+ * accurately without floating-point noise in the JSON output.
+ */
+const hexToSrgbComponents = (hex) => {
+    const clean = hex.replace('#', '');
+    const round4 = (n) => Math.round(n * 10000) / 10000;
+    const r = round4(parseInt(clean.slice(0, 2), 16) / 255);
+    const g = round4(parseInt(clean.slice(2, 4), 16) / 255);
+    const b = round4(parseInt(clean.slice(4, 6), 16) / 255);
+    return [r, g, b];
+};
+const toDTCGColorValue = (hex) => ({
+    colorSpace: 'srgb',
+    components: hexToSrgbComponents(hex),
+    hex,
+});
 const token = (value, description) => ({
     $type: 'color',
-    $value: value,
+    $value: toDTCGColorValue(value),
     $description: description,
 });
 /**

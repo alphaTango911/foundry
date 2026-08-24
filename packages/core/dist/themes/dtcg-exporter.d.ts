@@ -1,8 +1,9 @@
 /**
  * W3C DTCG Exporter
  *
- * Converts semantic token objects into the W3C Design Tokens Community
- * Group format (https://tr.designtokens.org/format/).
+ * Converts semantic token objects into the Design Tokens Community
+ * Group format, stable specification 2025.10
+ * (https://www.designtokens.org/tr/2025.10/).
  *
  * Why DTCG?
  * It is the interchange standard for token pipelines:
@@ -13,21 +14,37 @@
  *
  * Format essentials implemented here:
  * - Every token leaf carries "$type" and "$value"
+ * - Per the 2025.10 color module, "$value" for a color token is a
+ *   structured object — { colorSpace, components, hex } — not a bare
+ *   hex string. We use the "srgb" color space (Foundry's palettes are
+ *   generated in sRGB) and include "hex" as the optional fallback
+ *   field for tools that don't yet support structured color values.
  * - Groups are plain nested objects; "$type" declared at group level
  *   is inherited by children (we also declare it per leaf for clarity)
  * - "$description" documents intent, because a token's purpose is part
  *   of its contract — not just its value
  *
  * Theming note:
- * The DTCG spec does not yet standardize modes/themes (the resolver
- * spec is still in progress), so this follows the current community
- * convention: one document per theme, identical token paths in both.
+ * 2025.10 also stabilized a resolver module for modes/themes, but
+ * adopting it is a larger structural change than this exporter makes
+ * today. For now we still follow the simpler community convention of
+ * one document per theme with identical token paths in both.
  */
 import { type SemanticTokenSet } from '../semantic/tokens';
+/**
+ * A DTCG 2025.10 color value: colorSpace + components are required;
+ * hex is an optional fallback for tools with limited color-space support.
+ * https://www.designtokens.org/tr/2025.10/color/
+ */
+export interface DTCGColorValue {
+    colorSpace: 'srgb';
+    components: [number, number, number];
+    hex: string;
+}
 /** A single DTCG token leaf. */
 export interface DTCGToken {
     $type: 'color';
-    $value: string;
+    $value: DTCGColorValue;
     $description?: string;
 }
 /** A DTCG group: nested groups and/or token leaves. */

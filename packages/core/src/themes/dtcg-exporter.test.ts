@@ -1,9 +1,10 @@
 /**
  * DTCG Exporter tests
  *
- * The exporter's contract: valid DTCG structure ($type/$value on every
- * leaf), stable token paths across themes, valid hex values, and
- * lossless JSON round-tripping.
+ * The exporter's contract: valid DTCG 2025.10 structure ($type/$value
+ * on every leaf, $value as a structured srgb colorSpace/components
+ * object per the stable color module), stable token paths across
+ * themes, and lossless JSON round-tripping.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -48,19 +49,26 @@ describe('tokensToDTCG', () => {
     }
   });
 
-  it('every leaf carries $type color and a $value', () => {
+  it('every leaf carries $type color and a structured $value', () => {
     let count = 0;
     walkTokens(tokensToDTCG(tokens), (t) => {
       count++;
       expect(t.$type).toBe('color');
-      expect(typeof t.$value).toBe('string');
+      expect(typeof t.$value).toBe('object');
+      expect(t.$value).not.toBeNull();
     });
     expect(count).toBeGreaterThan(50);
   });
 
-  it('every $value is a valid hex color', () => {
+  it('every $value conforms to the DTCG 2025.10 srgb color value shape', () => {
     walkTokens(tokensToDTCG(tokens), (t) => {
-      expect(t.$value).toMatch(/^#[0-9a-fA-F]{6}$/);
+      expect(t.$value.colorSpace).toBe('srgb');
+      expect(t.$value.components).toHaveLength(3);
+      for (const c of t.$value.components) {
+        expect(c).toBeGreaterThanOrEqual(0);
+        expect(c).toBeLessThanOrEqual(1);
+      }
+      expect(t.$value.hex).toMatch(/^#[0-9a-fA-F]{6}$/);
     });
   });
 
@@ -68,6 +76,24 @@ describe('tokensToDTCG', () => {
     walkTokens(tokensToDTCG(tokens), (t) => {
       expect(t.$description).toBeTruthy();
     });
+  });
+
+  it('converts a known hex to correct normalized srgb components', () => {
+    // #3a5afe -> r:58/255, g:90/255, b:254/255
+    const color = tokensToDTCG(tokens).color as DTCGGroup;
+    const primary = color.primary as DTCGGroup;
+    const fill = primary.fill as DTCGToken;
+    expect(fill.$value.hex.toLowerCase()).toBe(tokens.primary.fill.toLowerCase());
+
+    const [r, g, b] = fill.$value.components;
+    const expected = tokens.primary.fill.replace('#', '');
+    const expectedR = parseInt(expected.slice(0, 2), 16) / 255;
+    const expectedG = parseInt(expected.slice(2, 4), 16) / 255;
+    const expectedB = parseInt(expected.slice(4, 6), 16) / 255;
+
+    expect(r).toBeCloseTo(expectedR, 3);
+    expect(g).toBeCloseTo(expectedG, 3);
+    expect(b).toBeCloseTo(expectedB, 3);
   });
 
   it('excludes raw palettes by default and includes them on request', () => {
@@ -91,7 +117,8 @@ describe('exportDTCG', () => {
     const parsed = JSON.parse(exportDTCG(tokens)) as {
       color: { primary: { fill: DTCGToken } };
     };
-    expect(parsed.color.primary.fill.$value).toBe(tokens.primary.fill);
+    expect(parsed.color.primary.fill.$value.hex).toBe(tokens.primary.fill);
+    expect(parsed.color.primary.fill.$value.colorSpace).toBe('srgb');
   });
 });
 
