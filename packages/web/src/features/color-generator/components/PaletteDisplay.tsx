@@ -38,6 +38,7 @@ const ContrastBadge = ({
         result.passes ? 'text-green-500' : 'text-red-400'
       }`}
       title={`${result.ratio}:1 — ${result.passes ? `passes ${wcagLevel}` : `fails ${wcagLevel}`}`}
+      aria-label={`Contrast ratio ${result.ratio} to 1, ${result.passes ? 'passes' : 'fails'} WCAG ${wcagLevel}`}
     >
       {result.ratio}:1
     </span>
@@ -64,14 +65,17 @@ const ColorSwatch = ({
   };
 
   return (
-    <div
-      className="flex flex-col items-center gap-1 flex-1 cursor-pointer group"
+    <button
+      type="button"
+      className="flex flex-col items-center gap-1 flex-1 cursor-pointer group appearance-none bg-transparent border-0 p-0 text-left rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       onClick={handleClick}
       title={`${name}-${shade}: ${hex} — click to copy`}
+      aria-label={`${name} shade ${shade}, ${hex}. Activate to copy hex value.`}
     >
       <div
         className="w-full h-20 rounded transition-transform group-hover:scale-105 relative overflow-hidden"
         style={{ backgroundColor: hex }}
+        aria-hidden="true"
       >
         {copied && (
           <div className="absolute inset-0 flex items-center justify-center bg-black/20">
@@ -83,7 +87,10 @@ const ColorSwatch = ({
         {hex}
       </span>
       <ContrastBadge hex={hex} background={background} />
-    </div>
+      <span className="sr-only" role="status" aria-live="polite">
+        {copied ? `Copied ${hex}` : ''}
+      </span>
+    </button>
   );
 };
 
@@ -112,7 +119,7 @@ const PaletteRow = ({
       <div className="w-24 shrink-0">
         <button
           onClick={copyRow}
-          className="text-left group/label"
+          className="text-left group/label focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 rounded"
           title={`Copy all ${name} hex values`}
         >
           <p className="text-base font-semibold capitalize text-foreground group-hover/label:text-primary transition-colors">
@@ -121,6 +128,9 @@ const PaletteRow = ({
           <p className="text-[10px] font-mono text-muted-foreground truncate">
             {baseHex}
           </p>
+          <span className="sr-only" role="status" aria-live="polite">
+            {rowCopied ? `Copied all ${name} hex values` : ''}
+          </span>
         </button>
       </div>
 
@@ -170,18 +180,23 @@ export const PaletteDisplay = () => {
             </p>
             <div className="flex items-center gap-3 mt-1">
               <span className="flex items-center gap-1 text-[10px] text-green-600">
-                ● Passes WCAG {wcagLevel}
+                <span aria-hidden="true">●</span> Passes WCAG {wcagLevel}
               </span>
               <span className="flex items-center gap-1 text-[10px] text-red-500">
-                ● Fails — use for fills/backgrounds only
+                <span aria-hidden="true">●</span> Fails — use for fills/backgrounds only
               </span>
             </div>
         </div>
 
         {/* Light / Dark toggle */}
-        <div className="flex items-center gap-1 bg-muted rounded-lg p-1">
+        <div
+          className="flex items-center gap-1 bg-muted rounded-lg p-1"
+          role="group"
+          aria-label="Preview background"
+        >
           <button
             onClick={() => setPreviewMode('light')}
+            aria-pressed={previewMode === 'light'}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
               previewMode === 'light'
                 ? 'bg-background text-foreground shadow-sm'
@@ -192,6 +207,7 @@ export const PaletteDisplay = () => {
           </button>
           <button
             onClick={() => setPreviewMode('dark')}
+            aria-pressed={previewMode === 'dark'}
             className={`px-3 py-1.5 rounded-md text-xs font-medium transition-colors ${
               previewMode === 'dark'
                 ? 'bg-background text-foreground shadow-sm'
